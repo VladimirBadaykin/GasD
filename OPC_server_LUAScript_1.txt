@@ -1,0 +1,28 @@
+-- инициализация
+ --require("sqlite3") 
+ local db=sqlite3.open('C:\\Maindb.dbsqlite3')
+ --local db = sqlite3.open_memory()
+ function OnInit()
+db:exec[[
+  CREATE TABLE test (nametag, value, time);
+]]
+ end
+-- деинициализация
+ function OnClose()
+ end
+-- функция,выполняющаяся перед попыткой чтения устройств
+ function OnBeforeReading()
+ end
+-- функция,выполняющаяся после попытки чтения устройств
+ function OnAfterReading()
+ end
+ --
+ function OnWriteBase(Text,Text2,Text3)
+  db:exec(string.format("INSERT INTO test VALUES ('%s','%s','%s');",Text,Text2,Text3))
+  for row in db:nrows("SELECT * FROM test") do
+    server.Message(row.nametag," : ",row.value," : ",row.time)
+  end
+ server.Message(string.format("INSERT INTO test VALUES ('%s','%s','%s');",Text,Text2,Text3))
+ server.Message("Teкст для занесения текста в базу ",Text,Text2,Text3); 
+ return "OK"
+ end

@@ -1,0 +1,14 @@
+-- инициализация 
+ function OnInit()
+ end
+-- деинициализация
+ function OnClose()
+ end
+-- обработка
+ function OnRead()
+    TV,TQ,TS = server.ReadTag("esp8266_Gas.Device1.GAS");
+    if TQ>=192  then     
+        s = server.RunFunctionFromNode("OnWriteBase",1,'GasSens',TV,string.sub (TS, 1,string.len (TS)-4));
+    end    
+    server.Message(s," OnRead");
+  end
